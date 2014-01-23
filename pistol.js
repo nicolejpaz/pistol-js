@@ -12,21 +12,26 @@
 
     //the custom javascript object
     Pistol = function(selector) {
-        	this.element = selector
+        	this.selection = selector
+
+    // ADDCLASS method
+            this.addClass = function(input){
+                this.selection.className = this.selection.className + " " + input
+            }
 
 
     // CONTAINS method
             this.contains = function(input){
-                for (i in this.element) {
-                        if (this.element[i] == input) return true
+                for (i in this.selection) {
+                        if (this.selection[i] == input) return true
                 }
                 return false
             }
 
     // EACH method
             this.each = function(callback){
-                for (var i=0; i<this.element.length; i++){ 
-                        callback(this.element[i], i)
+                for (var i=0; i<this.selection.length; i++){ 
+                        callback(this.selection[i], i)
                 }
             }
 
@@ -34,31 +39,48 @@
     // INJECT method
             this.inject = function(callback){
                 var accumulator = 0
-                for (var i=0; i<this.element.length; i++){ 
-                        accumulator = callback(accumulator, this.element[i], i)
+                for (var i=0; i<this.selection.length; i++){ 
+                        accumulator = callback(accumulator, this.selection[i], i)
                 }
                 return accumulator
             }
 
     // LAST method
             this.last = function(){
-                return this.element[this.element.length - 1]
+                return this.selection[this.selection.length - 1]
             }
 
     // ON method
             this.on = function(event,callback){
                 if (event == "click"){
-                    this.element.onclick = callback
+                    this.selection.onclick = callback
                 }
             }
 
     // MAP method
             this.map = function(callback){
                 var output = []
-                for (var i=0; i<this.element.length; i++){ 
-                        output.push(callback(this.element[i], i))
+                for (var i=0; i<this.selection.length; i++){ 
+                        output.push(callback(this.selection[i], i))
                 }
                 return output
+            }
+
+    // REMOVECLASS method
+            this.removeClass = function(input){
+                if (input){
+                    var old = this.selection.className.split(' ')
+                    var remove = input.split(' ')
+                    var seen = [], diff = []
+                    for ( var i = 0; i < remove.length; i++)
+                        seen[remove[i]] = true
+                    for ( var i = 0; i < old.length; i++)
+                        if (!seen[old[i]])
+                            diff.push(old[i])
+                    this.selection.className = diff.join(' ')
+                } else {
+                    this.selection.className = ""
+                }
             }
 
 
